@@ -1,0 +1,51 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Settings",
+    "description": "Global site settings for the biography"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroHeading": {
+      "type": "string",
+      "default": "From Then to Now"
+    },
+    "gapQuote": {
+      "type": "text",
+      "default": "Some years are meant to be lived, not captured."
+    },
+    "grade6Photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "collegePhoto": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "grade6Label": {
+      "type": "string",
+      "default": "Grade 6, 2012"
+    },
+    "collegeLabel": {
+      "type": "string",
+      "default": "3rd Year College, 2024"
+    },
+    "linkedinUrl": {
+      "type": "string"
+    },
+    "footerTagline": {
+      "type": "string",
+      "default": "Every journey has a story. This is mine."
+    }
+  }
+}
