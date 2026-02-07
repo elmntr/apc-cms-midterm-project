@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "photo_categories",
+  "info": {
+    "singularName": "photo-category",
+    "pluralName": "photo-categories",
+    "displayName": "Photo Category",
+    "description": "Categories for photos (Infancy, Toddler Years, College, etc.)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "caption": {
+      "type": "string",
+      "required": true
+    },
+    "section": {
+      "type": "enumeration",
+      "enum": ["childhood", "college"],
+      "required": true
+    },
+    "date": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "photos": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "descriptions": {
+      "type": "json"
+    }
+  }
+}

@@ -1,37 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { SiteSettings, Hobby } from "@/lib/strapi";
 
-interface Hobby {
-  id: string;
-  name: string;
-  icon: string;
+interface Props {
+  settings: SiteSettings | null;
+  hobbies: Hobby[];
 }
 
-const GapSection = ({ settings }: { settings: any }) => {
-  const [hobbies, setHobbies] = useState<Hobby[]>([]);
+const GapSection = ({ settings, hobbies }: Props) => {
   const quote = settings?.gapQuote || "Some years are meant to be lived, not captured.";
 
-  useEffect(() => {
-    const fetchHobbies = async () => {
-      try {
-        const response = await fetch("/api/hobbies");
-        if (response.ok) {
-          const data = await response.json();
-          setHobbies(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch hobbies:", error);
-      }
-    };
-
-    fetchHobbies();
-  }, []);
-
   const defaultHobbies = [
-    { id: "1", name: "Reading", icon: "book" },
-    { id: "2", name: "Gaming", icon: "gaming" },
-    { id: "3", name: "Sports", icon: "sports" },
+    { id: 1, documentId: "1", name: "Reading", icon: "book", order: 1 },
+    { id: 2, documentId: "2", name: "Gaming", icon: "gaming", order: 2 },
+    { id: 3, documentId: "3", name: "Sports", icon: "sports", order: 3 },
   ];
 
   const displayHobbies = hobbies.length > 0 ? hobbies : defaultHobbies;
