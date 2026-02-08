@@ -16,12 +16,19 @@ const HeroSection = ({ settings }: Props) => {
   return (
     <section id="home" className="pt-14 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Mobile Heading - Above photos */}
+        <div className="md:hidden text-center mb-6">
+          <h1 className="text-2xl text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>
+            {heading}
+          </h1>
+        </div>
+
         <div className="relative">
           {/* Mobile: Stacked | Desktop: Side by Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Left/Top Photo - Grade 6 (B&W) */}
             <div className="relative">
-              <div className="aspect-[4/5] md:aspect-[4/5] bg-gray-200 overflow-hidden">
+              <div className="aspect-[4/5] md:aspect-[4/5] bg-gray-200 overflow-hidden rounded-xl">
                 {grade6Photo ? (
                   <img src={grade6Photo} alt={grade6Label} className="w-full h-full object-cover grayscale" />
                 ) : (
@@ -40,7 +47,7 @@ const HeroSection = ({ settings }: Props) => {
 
             {/* Right/Bottom Photo - College */}
             <div className="relative">
-              <div className="aspect-[4/5] md:aspect-[4/5] bg-gray-200 overflow-hidden">
+              <div className="aspect-[4/5] md:aspect-[4/5] bg-gray-200 overflow-hidden rounded-xl">
                 {collegePhoto ? (
                   <img src={collegePhoto} alt={collegeLabel} className="w-full h-full object-cover" />
                 ) : (
@@ -60,18 +67,15 @@ const HeroSection = ({ settings }: Props) => {
 
           {/* Center Heading Overlay - Only on Desktop */}
           <div className="hidden md:block absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-            <div className="bg-[#1a1f3c] px-8 py-6 rounded">
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-white whitespace-nowrap">
+            <div className="bg-white/90 backdrop-blur-sm px-8 py-6 rounded-lg shadow-lg">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl text-slate-900 whitespace-nowrap" style={{ fontFamily: 'Playfair Display, serif' }}>
                 {heading}
               </h1>
             </div>
           </div>
         </div>
 
-        {/* Timeline connector - only on desktop */}
-        <div className="hidden md:flex justify-center py-8">
-          <div className="w-0.5 h-16 bg-[#1a1f3c]"></div>
-        </div>
+        
       </div>
     </section>
   );

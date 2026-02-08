@@ -48,7 +48,7 @@ const GapSection = ({ settings, hobbies }: Props) => {
     <section id="gap" className="py-20 bg-[#1a1f3c] text-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Quote */}
-        <blockquote className="text-2xl md:text-3xl lg:text-4xl font-playfair italic leading-relaxed mb-12">
+        <blockquote className="text-2xl md:text-3xl lg:text-4xl italic leading-relaxed mb-12" style={{ fontFamily: 'Playfair Display, serif' }}>
           {quote.split(",").map((part, index) => (
             <span key={index}>
               {part}

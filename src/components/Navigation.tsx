@@ -10,7 +10,7 @@ const Navigation = () => {
     <nav className="fixed top-0 w-full bg-white z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
-          <Link href="/" className="font-playfair text-lg text-gray-900">
+          <Link href="/" className="text-lg text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>
             The Unseen Journey
           </Link>
 
