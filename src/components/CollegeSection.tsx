@@ -112,12 +112,7 @@ const CollegeSection = ({ photos }: Props) => {
           })}
         </div>
 
-        {/* View Full Timeline Button */}
-        <div className="text-center mt-10">
-          <button className="px-6 py-2.5 bg-[#1a1f3c] text-white text-sm rounded-full hover:bg-[#2a2f4c] transition-colors">
-            View Full Timeline
-          </button>
-        </div>
+       
       </div>
 
       {/* Modal/Lightbox */}
