@@ -59,10 +59,10 @@ const ChildhoodGallery = ({ photos }: Props) => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-[#1a1f3c] mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
             The Early Years
           </h2>
-          <div className="w-8 h-0.5 bg-[#1a1f3c] mx-auto mb-4"></div>
+          <div className="w-8 h-0.5 bg-slate-900 mx-auto mb-4"></div>
           <p className="text-gray-500 text-sm">
             Birth to Grade 6 • The foundation of who I became
           </p>
@@ -80,9 +80,9 @@ const ChildhoodGallery = ({ photos }: Props) => {
                 className="group cursor-pointer"
                 onClick={() => openModal(category)}
               >
-                <div className="aspect-[4/3] md:aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3 relative hover:shadow-lg transition-shadow">
+                <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden mb-3 relative hover:shadow-lg transition-shadow">
                   {photoUrl ? (
-                    <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover" />
+                    <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover object-center" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                       <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,6 +104,9 @@ const ChildhoodGallery = ({ photos }: Props) => {
                   </div>
                 </div>
                 <p className="text-center text-base text-gray-700 font-medium">{category.caption}</p>
+                {category.date && (
+                  <p className="text-center text-sm text-gray-500">{category.date}</p>
+                )}
               </div>
             );
           })}
@@ -117,12 +120,12 @@ const ChildhoodGallery = ({ photos }: Props) => {
           onClick={closeModal}
         >
           <div 
-            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="font-playfair text-xl font-bold text-[#1a1f3c]">
+            <div className="flex justify-between items-center p-4 border-b shrink-0">
+              <h3 className="text-xl font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>
                 {selectedCategory.caption}
               </h3>
               <button 
@@ -136,12 +139,12 @@ const ChildhoodGallery = ({ photos }: Props) => {
             </div>
 
             {/* Photo Display */}
-            <div className="relative aspect-[4/3] bg-gray-100">
+            <div className="relative bg-gray-100 flex items-center justify-center shrink-0" style={{ height: '50vh' }}>
               {selectedCategory.photos[currentPhotoIndex] ? (
                 <img 
                   src={getMediaUrl(selectedCategory.photos[currentPhotoIndex])} 
                   alt={selectedCategory.caption}
-                  className="w-full h-full object-contain"
+                  className="max-w-full max-h-full object-contain"
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">

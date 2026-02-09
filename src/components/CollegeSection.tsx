@@ -8,11 +8,11 @@ interface Props {
 }
 
 const defaultCategories: StrapiPhotoCategory[] = [
-  { id: 1, documentId: "1", caption: "First Day of College", section: "college", date: "August 2022", order: 1, photos: [] },
-  { id: 2, documentId: "2", caption: "Late nights at the library", section: "college", date: "November 2023", order: 2, photos: [] },
-  { id: 3, documentId: "3", caption: "First major presentation", section: "college", date: "March 2024", order: 3, photos: [] },
-  { id: 4, documentId: "4", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 4, photos: [] },
-  { id: 5, documentId: "5", caption: "Summer break adventures", section: "college", date: "June 2024", order: 5, photos: [] },
+  { id: 1, documentId: "1", caption: "Senior High Graduation", section: "college", date: "April 2022", order: 1, photos: [] },
+  { id: 2, documentId: "2", caption: "Cycling adventures", section: "college", date: "2021-2022", order: 2, photos: [] },
+  { id: 3, documentId: "3", caption: "First Day of College", section: "college", date: "August 2022", order: 3, photos: [] },
+  { id: 4, documentId: "4", caption: "Late nights at the library", section: "college", date: "November 2023", order: 4, photos: [] },
+  { id: 5, documentId: "5", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 5, photos: [] },
 ];
 
 const CollegeSection = ({ photos }: Props) => {
@@ -58,11 +58,11 @@ const CollegeSection = ({ photos }: Props) => {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-[#1a1f3c] mb-3">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
             The Present
           </h2>
           <p className="text-gray-500 text-sm">
-            College Years • Building the future, one milestone at a time
+            Senior High School & College Years • Building the future, one milestone at a time
           </p>
         </div>
 
@@ -78,11 +78,11 @@ const CollegeSection = ({ photos }: Props) => {
                 className={`cursor-pointer group mb-6 md:break-inside-avoid md:mb-4 ${index % 3 === 0 ? 'lg:mt-8' : ''}`}
                 onClick={() => openModal(category)}
               >
-                <div className={`bg-gray-100 rounded-xl overflow-hidden relative hover:shadow-lg transition-shadow aspect-[4/3] md:${
+                <div className={`bg-gray-100 rounded-xl overflow-hidden relative hover:shadow-lg transition-shadow aspect-square md:${
                   index % 2 === 0 ? 'aspect-[3/4]' : 'aspect-square'
                 }`}>
                   {photoUrl ? (
-                    <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover" />
+                    <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover object-center" />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                       <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,13 +127,13 @@ const CollegeSection = ({ photos }: Props) => {
           onClick={closeModal}
         >
           <div 
-            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden"
+            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 border-b">
+            <div className="flex justify-between items-center p-4 border-b shrink-0">
               <div>
-                <h3 className="font-playfair text-xl font-bold text-[#1a1f3c]">
+                <h3 className="text-xl font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>
                   {selectedCategory.caption}
                 </h3>
                 <p className="text-sm text-gray-500">{selectedCategory.date}</p>
@@ -149,12 +149,12 @@ const CollegeSection = ({ photos }: Props) => {
             </div>
 
             {/* Photo Display */}
-            <div className="relative aspect-[4/3] bg-gray-100">
+            <div className="relative bg-gray-100 flex items-center justify-center shrink-0" style={{ height: '50vh' }}>
               {selectedCategory.photos[currentPhotoIndex] ? (
                 <img 
                   src={getMediaUrl(selectedCategory.photos[currentPhotoIndex])} 
                   alt={selectedCategory.caption}
-                  className="w-full h-full object-contain"
+                  className="max-w-full max-h-full object-contain"
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
