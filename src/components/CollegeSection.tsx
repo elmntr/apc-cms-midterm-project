@@ -8,15 +8,18 @@ interface Props {
 }
 
 const defaultCategories: StrapiPhotoCategory[] = [
-  { id: 1, documentId: "1", caption: "Senior High Graduation", section: "college", date: "April 2022", order: 1, photos: [] },
-  { id: 2, documentId: "2", caption: "Cycling adventures", section: "college", date: "2021-2022", order: 2, photos: [] },
+  { id: 1, documentId: "1", caption: "Cycling adventures", section: "college", date: "2021-2022", order: 1, photos: [] },
+  { id: 2, documentId: "2", caption: "Senior High Days", section: "college", date: "2021-2022", order: 2, photos: [] },
   { id: 3, documentId: "3", caption: "First Day of College", section: "college", date: "August 2022", order: 3, photos: [] },
-  { id: 4, documentId: "4", caption: "Late nights at the library", section: "college", date: "November 2023", order: 4, photos: [] },
-  { id: 5, documentId: "5", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 5, photos: [] },
+  { id: 4, documentId: "4", caption: "Swimming 1", section: "college", date: "2023", order: 4, photos: [] },
+  { id: 5, documentId: "5", caption: "Swimming 2", section: "college", date: "2024", order: 5, photos: [] },
+  { id: 6, documentId: "6", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 6, photos: [] },
+  { id: 7, documentId: "7", caption: "Mind Museum Date", section: "college", date: "2024", order: 7, photos: [] },
 ];
 
 const CollegeSection = ({ photos }: Props) => {
-  const categories = photos.length > 0 ? photos : defaultCategories;
+  const sortedPhotos = photos.length > 0 ? [...photos].sort((a, b) => a.order - b.order) : defaultCategories;
+  const categories = sortedPhotos;
   const [selectedCategory, setSelectedCategory] = useState<StrapiPhotoCategory | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
@@ -53,63 +56,82 @@ const CollegeSection = ({ photos }: Props) => {
     return "No description";
   };
 
+  // Distribute items into 3 columns maintaining left-to-right order
+  const distributeToColumns = () => {
+    const cols: StrapiPhotoCategory[][] = [[], [], []];
+    categories.forEach((cat, i) => {
+      cols[i % 3].push(cat);
+    });
+    return cols;
+  };
+
+  // Varying heights for masonry effect
+  const getHeightClass = (colIndex: number, itemIndex: number): string => {
+    const patterns = [
+      ['h-72', 'h-56', 'h-64'], // Column 1 heights
+      ['h-48', 'h-72', 'h-56'], // Column 2 heights
+      ['h-56', 'h-64', 'h-72'], // Column 3 heights
+    ];
+    return patterns[colIndex][itemIndex % 3];
+  };
+
+  const columns = distributeToColumns();
+
   return (
-    <section id="college" className="py-12 bg-white">
+    <section id="college" className="py-16 bg-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
             The Present
           </h2>
           <p className="text-gray-500 text-sm">
-            Senior High School & College Years • Building the future, one milestone at a time
+            College Years • Building the future, one milestone at a time
           </p>
         </div>
 
-        {/* Grid - Single column on mobile, masonry on desktop */}
-        <div className="grid grid-cols-1 md:columns-2 md:block lg:columns-3 gap-6 md:gap-4">
-          {categories.map((category, index) => {
-            const firstPhoto = category.photos[0];
-            const photoUrl = firstPhoto ? getMediaUrl(firstPhoto) : '';
-            
-            return (
-              <div 
-                key={category.id} 
-                className={`cursor-pointer group mb-6 md:break-inside-avoid md:mb-4 ${index % 3 === 0 ? 'lg:mt-8' : ''}`}
-                onClick={() => openModal(category)}
-              >
-                <div className={`bg-gray-100 rounded-xl overflow-hidden relative hover:shadow-lg transition-shadow aspect-square md:${
-                  index % 2 === 0 ? 'aspect-[3/4]' : 'aspect-square'
-                }`}>
-                  {photoUrl ? (
-                    <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover object-center" />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                      <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+        {/* Masonry Grid - 3 columns */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {columns.map((column, colIndex) => (
+            <div key={colIndex} className="flex flex-col gap-4">
+              {column.map((category, itemIndex) => {
+                const firstPhoto = category.photos[0];
+                const photoUrl = firstPhoto ? getMediaUrl(firstPhoto) : '';
+                
+                return (
+                  <div 
+                    key={category.id} 
+                    className="cursor-pointer group"
+                    onClick={() => openModal(category)}
+                  >
+                    <div className={`bg-gray-100 rounded-lg overflow-hidden relative hover:shadow-lg transition-all duration-300 ${getHeightClass(colIndex, itemIndex)}`}>
+                      {photoUrl ? (
+                        <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover object-center" />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                      )}
+                      {/* Photo count badge */}
+                      {category.photos.length > 1 && (
+                        <div className="absolute top-3 right-3 bg-[#1a1f3c] text-white text-xs px-2.5 py-1 rounded-full">
+                          {category.photos.length} photos
+                        </div>
+                      )}
+                      {/* Hover overlay */}
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                     </div>
-                  )}
-                  {/* Photo count badge */}
-                  {category.photos.length > 1 && (
-                    <div className="absolute top-3 right-3 bg-[#1a1f3c] text-white text-xs px-2.5 py-1 rounded-full">
-                      {category.photos.length} photos
+                    <div className="mt-2">
+                      <p className="text-sm font-medium text-[#1a1f3c]">{category.caption}</p>
+                      <p className="text-xs text-amber-600">{category.date}</p>
                     </div>
-                  )}
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
-                    <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm font-medium">
-                      View Gallery
-                    </span>
                   </div>
-                </div>
-                <div className="mt-3">
-                  <p className="text-base font-medium text-gray-900">{category.caption}</p>
-                  <p className="text-sm text-gray-500">{category.date}</p>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          ))}
         </div>
 
        
