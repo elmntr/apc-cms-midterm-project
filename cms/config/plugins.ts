@@ -8,8 +8,12 @@ export default ({ env }) => ({
         api_secret: env('CLOUDINARY_SECRET'),
       },
       actionOptions: {
-        upload: {},
-        uploadStream: {},
+        upload: {
+          folder: 'the-unseen-journey',
+        },
+        uploadStream: {
+          folder: 'the-unseen-journey',
+        },
         delete: {},
       },
     },
