@@ -65,12 +65,12 @@ const CollegeSection = ({ photos }: Props) => {
     return cols;
   };
 
-  // Varying heights for masonry effect
+  // Masonry heights - alternating pattern for visual interest
   const getHeightClass = (colIndex: number, itemIndex: number): string => {
     const patterns = [
-      ['h-72', 'h-56', 'h-64'], // Column 1 heights
-      ['h-48', 'h-72', 'h-56'], // Column 2 heights
-      ['h-56', 'h-64', 'h-72'], // Column 3 heights
+      ['aspect-[3/4]', 'aspect-square', 'aspect-[4/5]'],
+      ['aspect-square', 'aspect-[3/4]', 'aspect-[4/5]'],
+      ['aspect-[4/5]', 'aspect-square', 'aspect-[3/4]'],
     ];
     return patterns[colIndex][itemIndex % 3];
   };
