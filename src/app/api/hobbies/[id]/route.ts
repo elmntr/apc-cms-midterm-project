@@ -8,10 +8,10 @@ let hobbies: any[] = [
 ];
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = params.id;
+  const { id } = await params;
   hobbies = hobbies.filter((h) => h.id !== id);
   return NextResponse.json({ success: true });
 }

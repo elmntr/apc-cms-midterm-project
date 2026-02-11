@@ -128,6 +128,38 @@ npm run build
 npm start
 ```
 
+## Deployment (Vercel + Render)
+
+### 1. Deploy Strapi CMS to Render
+
+1. Push your code to GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com)
+3. Click **New → Blueprint**
+4. Connect your repo and select the `cms/render.yaml` file
+5. Render will auto-provision:
+   - PostgreSQL database (free tier)
+   - Strapi web service with all secrets auto-generated
+6. After deployment, note your Strapi URL (e.g., `https://the-unseen-journey-cms.onrender.com`)
+7. Visit `/admin` to create your first admin user
+
+### 2. Deploy Next.js to Vercel
+
+1. Go to [Vercel](https://vercel.com) and import your GitHub repo
+2. Set the **Root Directory** to `.` (project root)
+3. Add environment variable:
+   ```
+   NEXT_PUBLIC_STRAPI_URL=https://your-strapi-app.onrender.com
+   ```
+4. Deploy!
+
+### Environment Variables Summary
+
+| Variable | Where | Value |
+|----------|-------|-------|
+| `NEXT_PUBLIC_STRAPI_URL` | Vercel | Your Render Strapi URL |
+| `DATABASE_URL` | Render | Auto-configured |
+| `APP_KEYS`, `JWT_SECRET`, etc. | Render | Auto-generated |
+
 ## API Routes
 
 ### Photos

@@ -122,8 +122,11 @@ coverage
 ############################
 
 .env
+!.env.example
 license.txt
 exports
+*.tar.gz.enc
+backup.tar.gz.enc
 .strapi
 dist
 build
