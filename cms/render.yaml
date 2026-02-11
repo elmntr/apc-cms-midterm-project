@@ -10,7 +10,7 @@ services:
     runtime: node
     plan: free
     rootDir: cms
-    buildCommand: npm install && npm run build
+    buildCommand: npm install && mkdir -p public/uploads && npm run build
     startCommand: npm run start
     healthCheckPath: /_health
     envVars:
