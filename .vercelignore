@@ -1,0 +1,3 @@
+# Ignore Strapi CMS folder for Vercel deployment
+cms/
+prisma/

@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 let photos: any[] = [];
 
 export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = params.id;
+  const { id } = await params;
   photos = photos.filter((p) => p.id !== id);
   return NextResponse.json({ success: true });
 }
