@@ -4,6 +4,7 @@ import ChildhoodGallery from "@/components/ChildhoodGallery";
 import GapSection from "@/components/GapSection";
 import CollegeSection from "@/components/CollegeSection";
 import Footer from "@/components/Footer";
+import AuthGate from "@/components/AuthGate";
 import { getSiteSettings, getPhotoCategories, getHobbies } from "@/lib/strapi";
 
 export default async function Home() {
@@ -14,14 +15,18 @@ export default async function Home() {
     getHobbies(),
   ]);
 
+  const secretPhrase = process.env.SITE_SECRET_PHRASE || "letmein";
+
   return (
-    <main className="bg-cream">
-      <Navigation settings={settings} />
-      <HeroSection settings={settings} />
-      <ChildhoodGallery photos={childhoodPhotos} settings={settings} />
-      <GapSection settings={settings} hobbies={hobbies} />
-      <CollegeSection photos={collegePhotos} settings={settings} />
-      <Footer settings={settings} />
-    </main>
+    <AuthGate secretPhrase={secretPhrase}>
+      <main className="bg-cream">
+        <Navigation settings={settings} />
+        <HeroSection settings={settings} />
+        <ChildhoodGallery photos={childhoodPhotos} settings={settings} />
+        <GapSection settings={settings} hobbies={hobbies} />
+        <CollegeSection photos={collegePhotos} settings={settings} />
+        <Footer settings={settings} />
+      </main>
+    </AuthGate>
   );
 }
