@@ -49,14 +49,28 @@ export interface Hobby {
 export interface SiteSettings {
   id: number;
   documentId: string;
+  siteName: string;
+  heroEstYear: string;
   heroHeading: string;
-  gapQuote: string;
+  heroDescription: string;
+  heroCtaText: string;
   grade6Photo?: StrapiMedia;
   collegePhoto?: StrapiMedia;
   grade6Label: string;
   collegeLabel: string;
-  linkedinUrl?: string;
+  earlyYearsTitle: string;
+  earlyYearsStartYear: string;
+  earlyYearsEndYear: string;
+  earlyYearsDescription: string;
+  gapQuote: string;
+  gapDescription: string;
+  presentTitle: string;
+  presentStartYear: string;
+  presentEndYear: string;
+  presentDescription: string;
   footerTagline: string;
+  copyrightYear: string;
+  linkedinUrl?: string;
 }
 
 // Helper to get full media URL

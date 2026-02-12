@@ -15,12 +15,12 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="bg-white">
-      <Navigation />
+    <main className="bg-cream">
+      <Navigation settings={settings} />
       <HeroSection settings={settings} />
-      <ChildhoodGallery photos={childhoodPhotos} />
+      <ChildhoodGallery photos={childhoodPhotos} settings={settings} />
       <GapSection settings={settings} hobbies={hobbies} />
-      <CollegeSection photos={collegePhotos} />
+      <CollegeSection photos={collegePhotos} settings={settings} />
       <Footer settings={settings} />
     </main>
   );

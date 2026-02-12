@@ -1,31 +1,48 @@
 "use client";
 
 import { useState } from "react";
-import { PhotoCategory as StrapiPhotoCategory, getMediaUrl } from "@/lib/strapi";
+import { PhotoCategory as StrapiPhotoCategory, SiteSettings, getMediaUrl } from "@/lib/strapi";
 
 interface Props {
   photos: StrapiPhotoCategory[];
+  settings: SiteSettings | null;
 }
 
 const defaultCategories: StrapiPhotoCategory[] = [
-  { id: 1, documentId: "1", caption: "Cycling adventures", section: "college", date: "2021-2022", order: 1, photos: [] },
-  { id: 2, documentId: "2", caption: "Senior High Days", section: "college", date: "2021-2022", order: 2, photos: [] },
-  { id: 3, documentId: "3", caption: "First Day of College", section: "college", date: "August 2022", order: 3, photos: [] },
-  { id: 4, documentId: "4", caption: "Swimming 1", section: "college", date: "2023", order: 4, photos: [] },
-  { id: 5, documentId: "5", caption: "Swimming 2", section: "college", date: "2024", order: 5, photos: [] },
-  { id: 6, documentId: "6", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 6, photos: [] },
-  { id: 7, documentId: "7", caption: "Mind Museum Date", section: "college", date: "2024", order: 7, photos: [] },
+  { id: 1, documentId: "1", caption: "First Day of College", section: "college", date: "August 2023", order: 1, photos: [] },
+  { id: 2, documentId: "2", caption: "Late nights at the library", section: "college", date: "November 2023", order: 2, photos: [] },
+  { id: 3, documentId: "3", caption: "First major presentation", section: "college", date: "March 2024", order: 3, photos: [] },
+  { id: 4, documentId: "4", caption: "Campus Life", section: "college", date: "August 2023", order: 4, photos: [] },
+  { id: 5, documentId: "5", caption: "Dean's List achievement", section: "college", date: "December 2024", order: 5, photos: [] },
+  { id: 6, documentId: "6", caption: "Group project collaboration", section: "college", date: "September 2024", order: 6, photos: [] },
 ];
 
-const CollegeSection = ({ photos }: Props) => {
+const CollegeSection = ({ photos, settings }: Props) => {
   const sortedPhotos = photos.length > 0 ? [...photos].sort((a, b) => a.order - b.order) : defaultCategories;
-  const categories = sortedPhotos;
   const [selectedCategory, setSelectedCategory] = useState<StrapiPhotoCategory | null>(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
+  // CMS fields
+  const presentTitle = settings?.presentTitle || "The\nPresent";
+  const startYear = settings?.presentStartYear || "2023";
+  const endYear = settings?.presentEndYear || "PRESENT";
+  const description = settings?.presentDescription || "College years. Each milestone a testament to perseverance, each moment a step towards tomorrow.";
+
+  const renderTitle = () => {
+    const lines = presentTitle.split('\n');
+    return lines.map((line, index) => (
+      <span key={index}>
+        {line}
+        {index < lines.length - 1 && <br />}
+      </span>
+    ));
+  };
+
   const openModal = (category: StrapiPhotoCategory) => {
-    setSelectedCategory(category);
-    setCurrentPhotoIndex(0);
+    if (category.photos.length > 0) {
+      setSelectedCategory(category);
+      setCurrentPhotoIndex(0);
+    }
   };
 
   const closeModal = () => {
@@ -49,133 +66,146 @@ const CollegeSection = ({ photos }: Props) => {
     }
   };
 
-  const getDescription = (category: StrapiPhotoCategory, index: number): string => {
-    if (category.descriptions && category.descriptions[index.toString()]) {
-      return category.descriptions[index.toString()];
-    }
-    return "No description";
+  const formatNumber = (num: number): string => {
+    return num.toString().padStart(2, '0');
   };
 
-  // Distribute items into 3 columns maintaining left-to-right order
-  const distributeToColumns = () => {
-    const cols: StrapiPhotoCategory[][] = [[], [], []];
-    categories.forEach((cat, i) => {
-      cols[i % 3].push(cat);
-    });
-    return cols;
+  // Calculate varied heights for masonry effect
+  const getHeightClass = (index: number): string => {
+    const pattern = ['aspect-[3/4]', 'aspect-[4/5]', 'aspect-square', 'aspect-[4/5]', 'aspect-[3/4]', 'aspect-square'];
+    return pattern[index % pattern.length];
   };
-
-  // Masonry heights - alternating pattern for visual interest
-  const getHeightClass = (colIndex: number, itemIndex: number): string => {
-    const patterns = [
-      ['aspect-[3/4]', 'aspect-square', 'aspect-[4/5]'],
-      ['aspect-square', 'aspect-[3/4]', 'aspect-[4/5]'],
-      ['aspect-[4/5]', 'aspect-square', 'aspect-[3/4]'],
-    ];
-    return patterns[colIndex][itemIndex % 3];
-  };
-
-  const columns = distributeToColumns();
 
   return (
-    <section id="college" className="py-16 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="college" className="py-20 lg:py-28 bg-cream">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-            The Present
-          </h2>
-          <p className="text-gray-500 text-sm">
-            College Years • Building the future, one milestone at a time
-          </p>
-        </div>
-
-        {/* Masonry Grid - 3 columns */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {columns.map((column, colIndex) => (
-            <div key={colIndex} className="flex flex-col gap-4">
-              {column.map((category, itemIndex) => {
-                const firstPhoto = category.photos[0];
-                const photoUrl = firstPhoto ? getMediaUrl(firstPhoto) : '';
-                
-                return (
-                  <div 
-                    key={category.id} 
-                    className="cursor-pointer group"
-                    onClick={() => openModal(category)}
-                  >
-                    <div className={`bg-gray-100 rounded-lg overflow-hidden relative hover:shadow-lg transition-all duration-300 ${getHeightClass(colIndex, itemIndex)}`}>
-                      {photoUrl ? (
-                        <img src={photoUrl} alt={category.caption} className="w-full h-full object-cover object-center" />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                          <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                          </svg>
-                        </div>
-                      )}
-                      {/* Photo count badge */}
-                      {category.photos.length > 1 && (
-                        <div className="absolute top-3 right-3 bg-[#1a1f3c] text-white text-xs px-2.5 py-1 rounded-full">
-                          {category.photos.length} photos
-                        </div>
-                      )}
-                      {/* Hover overlay */}
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
-                    </div>
-                    <div className="mt-2">
-                      <p className="text-sm font-medium text-[#1a1f3c]">{category.caption}</p>
-                      <p className="text-xs text-amber-600">{category.date}</p>
-                    </div>
-                  </div>
-                );
-              })}
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-16 lg:mb-20">
+          <div>
+            <div className="flex items-center gap-4 mb-4">
+              <span className="text-sm tracking-[0.2em] text-tan">{startYear}</span>
+              <span className="text-tan">—</span>
+              <span className="text-sm tracking-[0.2em] text-tan">{endYear}</span>
             </div>
-          ))}
+            <h2 className="text-4xl lg:text-5xl xl:text-6xl text-brown" style={{ fontFamily: 'Playfair Display, serif' }}>
+              {renderTitle()}
+            </h2>
+          </div>
+          <div className="flex items-end">
+            <p className="text-brown/60 text-lg leading-relaxed max-w-md">
+              {description}
+            </p>
+          </div>
         </div>
 
-       
+        {/* Photo Grid - Masonry Style */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {sortedPhotos.map((category, index) => {
+            const firstPhoto = category.photos[0];
+            const photoUrl = firstPhoto ? getMediaUrl(firstPhoto) : '';
+            const hasPhotos = category.photos.length > 0;
+            
+            return (
+              <div 
+                key={category.id} 
+                className={`group ${hasPhotos ? 'cursor-pointer' : ''}`}
+                onClick={() => openModal(category)}
+              >
+                {/* Photo Container */}
+                <div className="relative">
+                  <div className={`${getHeightClass(index)} overflow-hidden bg-cream-dark`}>
+                    {photoUrl ? (
+                      <img 
+                        src={photoUrl} 
+                        alt={category.caption} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-cream-dark to-tan/20 flex items-center justify-center">
+                        <svg className="w-12 h-12 text-tan/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                    )}
+                    
+                    {/* Hover Overlay */}
+                    {hasPhotos && (
+                      <div className="absolute inset-0 bg-brown/0 group-hover:bg-brown/20 transition-colors duration-300 flex items-center justify-center">
+                        <span className="text-white opacity-0 group-hover:opacity-100 transition-opacity text-sm tracking-wider">
+                          VIEW GALLERY
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Number Badge */}
+                  <div className="absolute top-4 left-4 bg-brown text-cream w-12 h-12 flex items-center justify-center">
+                    <span className="text-lg font-medium">{formatNumber(index + 1)}</span>
+                  </div>
+                  
+                  {/* Photo Count */}
+                  {category.photos.length > 1 && (
+                    <div className="absolute top-4 right-4 bg-white/90 text-brown text-xs px-2.5 py-1">
+                      {category.photos.length} photos
+                    </div>
+                  )}
+                </div>
+                
+                {/* Caption */}
+                <div className="mt-4">
+                  <h3 className="text-lg text-brown mb-1" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    {category.caption}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-[1px] bg-tan"></div>
+                    <span className="text-sm tracking-wider text-tan uppercase">{category.date}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Modal/Lightbox */}
       {selectedCategory && (
         <div 
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
           onClick={closeModal}
         >
           <div 
-            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto flex flex-col"
+            className="bg-white max-w-4xl w-full max-h-[90vh] overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex justify-between items-center p-4 border-b shrink-0">
+            <div className="flex justify-between items-center p-6 border-b border-cream-dark">
               <div>
-                <h3 className="text-xl font-bold text-slate-900" style={{ fontFamily: 'Playfair Display, serif' }}>
+                <h3 className="text-2xl text-brown" style={{ fontFamily: 'Playfair Display, serif' }}>
                   {selectedCategory.caption}
                 </h3>
-                <p className="text-sm text-gray-500">{selectedCategory.date}</p>
+                <p className="text-sm text-tan mt-1">{selectedCategory.date}</p>
               </div>
               <button 
                 onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-brown/50 hover:text-brown transition-colors p-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
             {/* Photo Display */}
-            <div className="relative bg-gray-100 flex items-center justify-center shrink-0" style={{ height: '50vh' }}>
+            <div className="relative bg-cream flex items-center justify-center" style={{ minHeight: '50vh' }}>
               {selectedCategory.photos[currentPhotoIndex] ? (
                 <img 
                   src={getMediaUrl(selectedCategory.photos[currentPhotoIndex])} 
                   alt={selectedCategory.caption}
-                  className="max-w-full max-h-full object-contain"
+                  className="max-w-full max-h-[60vh] object-contain"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-full h-64 bg-cream-dark flex items-center justify-center">
+                  <svg className="w-16 h-16 text-tan/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -186,43 +216,40 @@ const CollegeSection = ({ photos }: Props) => {
                 <>
                   <button
                     onClick={prevPhoto}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white hover:bg-cream p-3 shadow-lg transition-colors"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg className="w-5 h-5 text-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
                   <button
                     onClick={nextPhoto}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white hover:bg-cream p-3 shadow-lg transition-colors"
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg className="w-5 h-5 text-brown" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
                     </svg>
                   </button>
                 </>
               )}
             </div>
 
-            {/* Photo Info */}
-            <div className="p-4">
-              <p className="text-sm text-gray-600">
-                {getDescription(selectedCategory, currentPhotoIndex)}
-              </p>
-              <p className="text-xs text-gray-400 mt-2">
+            {/* Photo Counter */}
+            <div className="p-4 text-center border-t border-cream-dark">
+              <span className="text-sm text-tan">
                 {currentPhotoIndex + 1} of {selectedCategory.photos.length}
-              </p>
+              </span>
             </div>
 
             {/* Thumbnail Strip */}
             {selectedCategory.photos.length > 1 && (
-              <div className="flex gap-2 p-4 pt-0 overflow-x-auto">
+              <div className="flex gap-2 p-4 overflow-x-auto bg-cream-dark">
                 {selectedCategory.photos.map((photo, index) => (
                   <button
                     key={photo.id}
                     onClick={() => setCurrentPhotoIndex(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 ${
-                      index === currentPhotoIndex ? 'border-[#1a1f3c]' : 'border-transparent'
+                    className={`flex-shrink-0 w-16 h-16 overflow-hidden border-2 transition-colors ${
+                      index === currentPhotoIndex ? 'border-brown' : 'border-transparent'
                     }`}
                   >
                     <img src={getMediaUrl(photo)} alt="" className="w-full h-full object-cover" />

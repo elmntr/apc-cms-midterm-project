@@ -12,13 +12,25 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "siteName": {
+      "type": "string",
+      "default": "THE UNSEEN JOURNEY"
+    },
+    "heroEstYear": {
+      "type": "string",
+      "default": "EST. 2006"
+    },
     "heroHeading": {
       "type": "string",
       "default": "From Then to Now"
     },
-    "gapQuote": {
+    "heroDescription": {
       "type": "text",
-      "default": "Some years are meant to be lived, not captured."
+      "default": "A curated collection of moments that shaped a lifetime. Each photograph tells a story, each chapter reveals growth."
+    },
+    "heroCtaText": {
+      "type": "string",
+      "default": "BEGIN JOURNEY"
     },
     "grade6Photo": {
       "type": "media",
@@ -34,18 +46,62 @@
     },
     "grade6Label": {
       "type": "string",
-      "default": "Grade 6, 2012"
+      "default": "2012"
     },
     "collegeLabel": {
       "type": "string",
-      "default": "3rd Year College, 2024"
+      "default": "2024"
     },
-    "linkedinUrl": {
-      "type": "string"
+    "earlyYearsTitle": {
+      "type": "string",
+      "default": "The Early Years"
+    },
+    "earlyYearsStartYear": {
+      "type": "string",
+      "default": "2006"
+    },
+    "earlyYearsEndYear": {
+      "type": "string",
+      "default": "2012"
+    },
+    "earlyYearsDescription": {
+      "type": "text",
+      "default": "Foundation stones of character. The years of wonder, discovery, and innocent dreams."
+    },
+    "gapQuote": {
+      "type": "text",
+      "default": "Some years are meant to be lived, not captured."
+    },
+    "gapDescription": {
+      "type": "text",
+      "default": "A chapter unwritten in photographs, but deeply etched in memory. Growth happened in quiet moments, away from the lens."
+    },
+    "presentTitle": {
+      "type": "string",
+      "default": "The Present"
+    },
+    "presentStartYear": {
+      "type": "string",
+      "default": "2023"
+    },
+    "presentEndYear": {
+      "type": "string",
+      "default": "PRESENT"
+    },
+    "presentDescription": {
+      "type": "text",
+      "default": "College years. Each milestone a testament to perseverance, each moment a step towards tomorrow."
     },
     "footerTagline": {
       "type": "string",
       "default": "Every journey has a story. This is mine."
+    },
+    "copyrightYear": {
+      "type": "string",
+      "default": "2026"
+    },
+    "linkedinUrl": {
+      "type": "string"
     }
   }
 }
