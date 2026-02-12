@@ -544,19 +544,34 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    collegeLabel: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'3rd Year College, 2024'>;
+    collegeLabel: Schema.Attribute.String & Schema.Attribute.DefaultTo<'2024'>;
     collegePhoto: Schema.Attribute.Media<'images'>;
+    copyrightYear: Schema.Attribute.String & Schema.Attribute.DefaultTo<'2026'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    earlyYearsDescription: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'Foundation stones of character. The years of wonder, discovery, and innocent dreams.'>;
+    earlyYearsEndYear: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'2012'>;
+    earlyYearsStartYear: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'2006'>;
+    earlyYearsTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'The Early Years'>;
     footerTagline: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Every journey has a story. This is mine.'>;
+    gapDescription: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'A chapter unwritten in photographs, but deeply etched in memory. Growth happened in quiet moments, away from the lens.'>;
     gapQuote: Schema.Attribute.Text &
       Schema.Attribute.DefaultTo<'Some years are meant to be lived, not captured.'>;
-    grade6Label: Schema.Attribute.String &
-      Schema.Attribute.DefaultTo<'Grade 6, 2012'>;
+    grade6Label: Schema.Attribute.String & Schema.Attribute.DefaultTo<'2012'>;
     grade6Photo: Schema.Attribute.Media<'images'>;
+    heroCtaText: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'BEGIN JOURNEY'>;
+    heroDescription: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'A curated collection of moments that shaped a lifetime. Each photograph tells a story, each chapter reveals growth.'>;
+    heroEstYear: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'EST. 2006'>;
     heroHeading: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'From Then to Now'>;
     linkedinUrl: Schema.Attribute.String;
@@ -566,7 +581,17 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
       'api::site-setting.site-setting'
     > &
       Schema.Attribute.Private;
+    presentDescription: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'College years. Each milestone a testament to perseverance, each moment a step towards tomorrow.'>;
+    presentEndYear: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'PRESENT'>;
+    presentStartYear: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'2023'>;
+    presentTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'The Present'>;
     publishedAt: Schema.Attribute.DateTime;
+    siteName: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'THE UNSEEN JOURNEY'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

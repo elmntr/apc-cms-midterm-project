@@ -8,9 +8,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        slateGray: "#708090",
-        navyBlue: "#000080",
-        white: "#FFFFFF",
+        cream: "#F5F1EB",
+        "cream-dark": "#EDE8E0",
+        brown: {
+          DEFAULT: "#3D3425",
+          light: "#5C4D3A",
+          dark: "#2A241A",
+        },
+        tan: {
+          DEFAULT: "#B8A88A",
+          light: "#C9BC9F",
+          dark: "#9A8B6F",
+        },
+        gold: "#B8A06E",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
